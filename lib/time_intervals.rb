@@ -1,13 +1,11 @@
-# frozen_string_literal: true
-
-require 'Time'
+require 'time'
 
 class TimeIntervals
   def initialize(time_periods)
-    @time_periods = time_periods.uniq
+    @time_periods = time_periods.uniq unless time_periods.nil?
   end
 
-  def free_time
+  def unite_periods
     @time_periods.sort_by { |period| Time.parse(period.first) }.each do |period|
       next_period = @time_periods[@time_periods.find_index(period) + 1]
       break if next_period.nil?
@@ -24,11 +22,3 @@ class TimeIntervals
     Time.parse(first_period.last) >= Time.parse(second_period.first)
   end
 end
-
-puts TimeIntervals.new(
-  [['10:00', '10:20'],
-   ['10:40', '11:00'],
-   ['10:50', '12:00'],
-   ['12:00', '13:00'],
-   ['10:00', '10:20']]
-).free_time.inspect
